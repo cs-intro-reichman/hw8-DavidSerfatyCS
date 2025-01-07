@@ -31,7 +31,7 @@ public class Network {
     public User getUser(String name) {
         if (userCount == 0) return null;
         for (int i = 0; i < userCount; i++) {
-            if (name.equals(users[i].getName())) return users[i];
+            if (name.toLowerCase().equals(users[i].getName())) return users[i];
         }
         return null;
     }
@@ -53,8 +53,9 @@ public class Network {
      *  If any of the two names is not a user in this network,
      *  or if the "follows" addition failed for some reason, returns false. */
     public boolean addFollowee(String name1, String name2) {
-         if (getUser(name1) == null || getUser(name2) == null) return false;
-
+        if (name1 == null || name2 == null) return false;
+        if (getUser(name1) == null || getUser(name2) == null) return false;
+        if (name1.equals(name2)) return false;
         User user1 = getUser(name1);
         return user1.addFollowee(name2);
         
@@ -106,9 +107,10 @@ public class Network {
     // Returns a textual description of all the users in this network, and who they follow.
     public String toString() {
         String result = "Network with " + userCount + " users:\n";
-        for (int i = 0; i < userCount; i++) {
+        for (int i = 0; i < userCount - 1; i++) {
             result += users[i].toString() +"\n";
         }
+        result += users[userCount - 1].toString();
         return result;
     
     }
