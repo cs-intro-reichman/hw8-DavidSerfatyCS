@@ -72,14 +72,13 @@ public class Network {
         for (int i = 0; i < userCount; i++) {
 
             if (users[i] != user && !user.follows(users[i].getName())) {
-                
-                if (i == users.length - 1) break;
                 if (recomenddedUser == null || user.countMutual(users[i]) > user.countMutual(recomenddedUser)) {
                     recomenddedUser = users[i];
             }
         }
-        if (recomenddedUser == null) return null;
+       
         }
+        if (recomenddedUser == null) return null;
         return recomenddedUser.getName();
     }
 
@@ -89,14 +88,16 @@ public class Network {
     public String mostPopularUser() {
         if (userCount == 0) return null;
 
-        User mostPopular = users[0];
-        for (int i = 1; i < userCount; i++) {
+        int highestFolloweeCount = -1;
+        String mostPopular = null;
+
+        for (int i = 0; i < userCount; i++) {
             
-            if (followeeCount(users[i].getName()) > followeeCount(mostPopular.getName())) {
-                mostPopular = users[i];
+            if (followeeCount(users[i].getName()) > highestFolloweeCount) {
+                mostPopular = users[i].getName();
             }
         }
-        return mostPopular.getName();
+        return mostPopular;
     }
 
     /** Returns the number of times that the given name appears in the follows lists of all
@@ -115,13 +116,11 @@ public class Network {
 
     // Returns a textual description of all the users in this network, and who they follow.
     public String toString() {
-        String result = "Network with " + userCount + " users:\n";
-        if (userCount == 0) return "Network:" ;
-        for (int i = 0; i < userCount - 1; i++) {
-            result += users[i].toString() +"\n";
-        }
-        result += users[userCount - 1].toString();
-        return result;
-    
+       String retString = "";
+       retString += "Network:\n";
+       for (int i = 0; i < userCount; i++) {
+        retString += users[i].toString() + "\n";
+       }
+       return retString.substring(0, retString.length() - 1);
     }
 }
