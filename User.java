@@ -4,7 +4,6 @@
 
     // Maximum number of users that a user can follow
     static int maxfCount = 10;
-    public int followeeCount;
     private String name;       // name of this user
     private String[] follows;  // array of user names that this user follows
     private int fCount;        // actual number of followees (must be <= maxfCount)
@@ -13,8 +12,7 @@
     public User(String name) {
         this.name = name;
         follows = new String[maxfCount]; // fixed-size array for storing followees
-        fCount = 0;    
-        followeeCount = 0;                  // initial number of followees
+        fCount = 0;                   // initial number of followees
     }
 
     /** Creates a user with some followees. The only purpose of this constructor is 
