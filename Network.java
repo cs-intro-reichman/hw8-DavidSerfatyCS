@@ -95,6 +95,7 @@ public class Network {
             
             if (followeeCount(users[i].getName()) > highestFolloweeCount) {
                 mostPopular = users[i].getName();
+                highestFolloweeCount = followeeCount(users[i].getName());
             }
         }
         return mostPopular;
