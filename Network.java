@@ -57,13 +57,10 @@ public class Network {
         if (getUser(name1) == null || getUser(name2) == null) return false;
         if (name1.equals(name2)) return false;
         User user1 = getUser(name1);
-        boolean addfollower = user1.addFollowee(name2);
-        if (addfollower) {
-            followeeCount(name2);
-            return true;
+        return user1.addFollowee(name2);
         }
         
-    }
+    
     
     /** For the user with the given name, recommends another user to follow. The recommended user is
      *  the user that has the maximal mutual number of followees as the user with the given name. */
@@ -82,9 +79,11 @@ public class Network {
             }
         }
         if (recomenddedUser == null) return null;
+        }
         return recomenddedUser.getName();
     }
-    }
+
+    
     /** Computes and returns the name of the most popular user in this network: 
      *  The user who appears the most in the follow lists of all the users. */
     public String mostPopularUser() {
