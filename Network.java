@@ -29,9 +29,9 @@ public class Network {
      *  If there is no such user, returns null.
      *  Notice that the method receives a String, and returns a User object. */
     public User getUser(String name) {
-        if (userCount == 0) return null;
+        if (userCount == 0 || name == null) return null;
         for (int i = 0; i < userCount; i++) {
-            if (name.toLowerCase().equals(users[i].getName().toLowerCase())) return users[i];
+            if (name.equalsIgnoreCase(users[i].getName())) return users[i];
         }
         return null;
     }
@@ -57,7 +57,11 @@ public class Network {
         if (getUser(name1) == null || getUser(name2) == null) return false;
         if (name1.equals(name2)) return false;
         User user1 = getUser(name1);
-        return user1.addFollowee(name2);
+        boolean addfollower = user1.addFollowee(name2);
+        if (addfollower) {
+            followeeCount(name2);
+            return true;
+        }
         
     }
     
@@ -75,13 +79,12 @@ public class Network {
                 if (i == users.length - 1) break;
                 if (recomenddedUser == null || user.countMutual(users[i]) > user.countMutual(recomenddedUser)) {
                     recomenddedUser = users[i];
-                }
             }
         }
         if (recomenddedUser == null) return null;
         return recomenddedUser.getName();
     }
-
+    }
     /** Computes and returns the name of the most popular user in this network: 
      *  The user who appears the most in the follow lists of all the users. */
     public String mostPopularUser() {
@@ -90,7 +93,7 @@ public class Network {
         User mostPopular = users[0];
         for (int i = 1; i < userCount; i++) {
             
-            if (users[i].getfCount() > mostPopular.getfCount()) {
+            if (users[i].getfolloweeCount() > mostPopular.getfolloweeCount()) {
                 mostPopular = users[i];
             }
         }
@@ -100,13 +103,18 @@ public class Network {
     /** Returns the number of times that the given name appears in the follows lists of all
      *  the users in this network. Note: A name can appear 0 or 1 times in each list. */
     private int followeeCount(String name) {
-        User user = getUser(name);
-        return user.getfCount();
-    }
+            User user = getUser(name);
+            user.setfolloweeCount();
+        return user.getfolloweeCount();
+ }
+        
+        
+    
 
     // Returns a textual description of all the users in this network, and who they follow.
     public String toString() {
         String result = "Network with " + userCount + " users:\n";
+        if (userCount == 0) return "Network:" ;
         for (int i = 0; i < userCount - 1; i++) {
             result += users[i].toString() +"\n";
         }
